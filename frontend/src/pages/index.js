@@ -12,12 +12,12 @@ const Home = () => {
           // 'http://localhost:5001/', 
           'https://bakery-project-production.up.railway.app/',
           {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({}),
-        });
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({}),
+          });
 
         const data = await response.json();
         if (data.inventory === 'invalid') {
