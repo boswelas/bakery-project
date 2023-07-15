@@ -61,4 +61,4 @@ def get_inventory():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=os.getenv("PORT", default=5001))
+    app.run(debug=False, port=os.getenv("PORT", default=5001))
