@@ -26,6 +26,12 @@ def create_connection():
     return db
 
 
+@app.route('/')
+def index():
+    print("Server is running!")
+    return jsonify("Welcome to the backend!")
+
+
 ############################# BEGIN route for Home #############################
 
 @app.route('/inventory', methods=['POST'])
