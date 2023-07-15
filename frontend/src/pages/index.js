@@ -10,7 +10,7 @@ const Home = () => {
       try {
         const response = await fetch(
           // 'http://localhost:5001/', 
-          'https://bakery-project-production.up.railway.app/',
+          'https://bakery-project-production.up.railway.app/inventory',
           {
             method: 'POST',
             headers: {

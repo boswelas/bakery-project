@@ -28,7 +28,7 @@ def create_connection():
 
 ############################# BEGIN route for Home #############################
 
-@app.route('/', methods=['POST'])
+@app.route('/inventory', methods=['POST'])
 def get_inventory():
     try:
         cnx = create_connection()
