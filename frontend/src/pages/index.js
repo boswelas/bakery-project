@@ -9,7 +9,7 @@ const Home = () => {
     const fetchInventoryData = async () => {
       try {
         const response = await fetch(
-          // 'http://localhost:5001/', 
+          // 'http://localhost:5001/inventory', 
           'https://bakery-project-production.up.railway.app/inventory',
           {
             method: 'POST',

@@ -5,7 +5,7 @@ import mysql.connector
 
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins='https://bakery-project-theta.vercel.app')
 
 HOST = os.environ['MYSQLHOST']
 PORT = os.environ['MYSQLPORT']
