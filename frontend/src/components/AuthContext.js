@@ -1,12 +1,12 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import {
     onAuthStateChanged,
-    getAuth,
+    // getAuth,
     signInWithPopup,
     GoogleAuthProvider,
     signOut,
 } from 'firebase/auth';
-import { auth } from '../components/firebase';
+import { auth } from '../components/Firebase';
 
 const provider = new GoogleAuthProvider();
 
@@ -45,24 +45,26 @@ export const AuthContextProvider = ({ children }) => {
         return () => unsubscribe();
     }, []);
 
-    const login = async () => {
+    const googleLogin = async () => {
         try {
             const result = await signInWithPopup(auth, provider);
             const uid = result.user.uid;
             const email = result.user.email;
             const displayName = result.user.displayName;
-
+            console.log(uid, email, displayName);
             const response = await fetch(
                 // 'https://travel-planner-production.up.railway.app/login', 
                 'http://localhost:5001/login',
                 {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ uid: uid, email: email, displayName: displayName }),
-            });
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ uid: uid, email: email, displayName: displayName }),
+                });
             response.json();
+            console.log(response
+            );
         } catch (error) {
             if (error.code === 'auth/popup-closed-by-user') {
                 console.log('Authentication popup closed by the user');
@@ -79,7 +81,7 @@ export const AuthContextProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, getToken }}>
+        <AuthContext.Provider value={{ user, googleLogin, logout, getToken }}>
             {loading ? null : children}
         </AuthContext.Provider>
     );

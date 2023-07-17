@@ -65,25 +65,32 @@ def get_inventory():
 
 @app.route("/login", methods=["POST"])
 def check_user_exists():
+    print("in function")
     if request.method == "POST":
         data = request.get_json()
         uid = data["uid"]
         email = data["email"]
+        first_name = "a"
+        last_name = "b"
         displayName = data["displayName"]
-        query = ("SELECT * FROM customer WHERE id = (%s)")
+        phone_number = "c"
+        print(data)
+        query = ("SELECT * FROM customer WHERE uid = (%s)")
         # Opens connection & cursor
         cnx = create_connection()
         cur = cnx.cursor()
 
         cur.execute(query, (uid,))
         data = cur.fetchall()
+        print("data is ", data)
         if (len(data) == 0):
             try:
+                print("trying to insert")
                 cur.execute("""
-                    INSERT INTO customer (uid, email, display_name)
-                    VALUES ( %s, %s, %s)
-                """, (uid, email, displayName))
-
+                    INSERT INTO customer (first_name, last_name, phone_number, email, display_name, uid)
+                    VALUES ( %s, %s, %s, %s, %s, %s)
+                """, (first_name, last_name, phone_number, email, displayName, uid))
+                print("inserted")
                 cnx.commit()
                 cur.close()
                 cnx.close()

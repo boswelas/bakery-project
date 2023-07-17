@@ -269,3 +269,18 @@
   /* Add 1px solid black border to table header and table data cells */
   padding: 8px;
 }
+
+.Modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 200px;
+  background-color: #fff;
+  border: 2px solid #000;
+  box-shadow: 24px;
+  padding: 16px;
+  border: none;
+  border-radius: 5px;
+}

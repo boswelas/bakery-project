@@ -9,9 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mui/material": "5.12.3",
+    "@mui/icons-material": "5.11.16",
+    "@emotion/react": "11.11.0",
+    "@emotion/styled": "11.11.0",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
-    "firebase": "^9.23.0",
+    "firebase": "^10.0.0",
     "mini-css-extract-plugin": "latest",
     "next": "latest",
     "react": "18.2.0",
