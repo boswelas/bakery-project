@@ -61,6 +61,24 @@ def get_inventory():
 ############################# End route for Home #############################
 
 ############################# BEGIN route for Login #############################
+@app.route("/addUser", methods=["POST"])
+def add_user():
+    if request.method == "POST":
+        data = request.get_json()
+        email = data["email"]
+        first = data["first"]
+        last = data["last"]
+        phone = data["phone"]
+        cnx = create_connection()
+        cur = cnx.cursor()
+        cur.execute("""INSERT INTO customer (first_name, last_name, phone_number, email) VALUES (%s, %s, %s, %s)""",
+                    (first, last, phone, email))
+        cnx.commit()
+        cur.close()
+        cnx.close()
+        return jsonify({"success": "true"})
+
+
 @app.route("/checkUser", methods=["POST"])
 def check_exists():
     if request.method == "POST":
@@ -80,49 +98,30 @@ def check_exists():
         return jsonify({"user": data})
 
 
-@app.route("/login", methods=["POST"])
-def check_user_exists():
-    print("in function")
+@app.route("/getUser", methods=["POST"])
+def get_user():
     if request.method == "POST":
         data = request.get_json()
-        uid = data["uid"]
         email = data["email"]
-        first_name = "a"
-        last_name = "b"
-        displayName = data["displayName"]
-        phone_number = "c"
-        print(data)
-        query = ("SELECT * FROM customer WHERE uid = (%s)")
-        # Opens connection & cursor
+        query = ("SELECT * FROM customer WHERE email = (%s)")
         cnx = create_connection()
         cur = cnx.cursor()
-
-        cur.execute(query, (uid,))
-        data = cur.fetchall()
-        print("data is ", data)
-        if (len(data) == 0):
-            try:
-                print("trying to insert")
-                cur.execute("""
-                    INSERT INTO customer (first_name, last_name, phone_number, email, display_name, uid)
-                    VALUES ( %s, %s, %s, %s, %s, %s)
-                """, (first_name, last_name, phone_number, email, displayName, uid))
-                print("inserted")
-                cnx.commit()
-                cur.close()
-                cnx.close()
-
-            except Exception as e:
-                cnx.rollback()
-                cur.close()
-                cnx.close()
-
+        cur.execute(query, (email,))
+        data = []
+        for row in cur.fetchall():
+            item = {
+                'id': row[0],
+                'first_name': row[1],
+                'last_name': row[2],
+                'phone_number': row[3],
+                'email': row[4]
+            }
+            data.append(item)
         cur.close()
         cnx.close()
         return jsonify({"user": data})
 
+
 ############################# END route for Login #############################
-
-
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=os.getenv("PORT", default=5001))

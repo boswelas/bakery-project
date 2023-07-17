@@ -11,6 +11,7 @@ const NavBar = () => {
     const [open, setOpen] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [displayName, setdisplayName] = useState('');
 
     const handleOpen = () => {
         setOpen(true);
@@ -48,6 +49,7 @@ const NavBar = () => {
             console.log(email, password);
             signInWithEmail(email, password);
             handleClose();
+            setdisplayName(data.user[0][1]);
         }
 
         // Reset the form fields
@@ -66,7 +68,7 @@ const NavBar = () => {
                     <>
                         <div>
                             <div>
-                                <h4>Welcome {user.displayName}</h4>
+                                <h4>Welcome {displayName}</h4>
                                 <Link href="/">
                                     <span className={styles.SignOutLink} onClick={logout}>Sign out</span>
                                 </Link>
