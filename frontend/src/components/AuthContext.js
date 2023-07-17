@@ -1,10 +1,12 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import {
     onAuthStateChanged,
-    // getAuth,
+    getAuth,
     signInWithPopup,
     GoogleAuthProvider,
     signOut,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword
 } from 'firebase/auth';
 import { auth } from '../components/Firebase';
 
@@ -45,6 +47,32 @@ export const AuthContextProvider = ({ children }) => {
         return () => unsubscribe();
     }, []);
 
+    const signUpWithEmail = (email, password) => {
+        createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Handle successful user creation
+                const user = userCredential.user;
+                console.log("User created:", user);
+            })
+            .catch((error) => {
+                // Handle error during user creation
+                console.error("Error creating user:", error);
+            });
+    };
+    const signInWithEmail = (email, password) => {
+        console.log("signInWithEmailAndPassword function called");
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Signed in 
+                const user = userCredential.user;
+                // ...
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+            });
+    };
+
     const googleLogin = async () => {
         try {
             const result = await signInWithPopup(auth, provider);
@@ -81,7 +109,7 @@ export const AuthContextProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, googleLogin, logout, getToken }}>
+        <AuthContext.Provider value={{ user, googleLogin, logout, getToken, signUpWithEmail, signInWithEmail }}>
             {loading ? null : children}
         </AuthContext.Provider>
     );

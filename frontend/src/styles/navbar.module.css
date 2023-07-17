@@ -1,0 +1,38 @@
+.navbar {
+    background-color: #f2f2f2;
+    padding: 10px;
+}
+
+.navbar-nav {
+    display: flex;
+    /* Display the links in a flex container */
+    justify-content: flex-start;
+    /* Align links to the left */
+    gap: 10px;
+    /* Add spacing between the links */
+}
+
+.navbar-link {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.navbar-link:hover {
+    color: #000;
+}
+
+.Modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 200px;
+    background-color: #fff;
+    border: 2px solid #000;
+    box-shadow: 24px;
+    padding: 16px;
+    border: none;
+    border-radius: 5px;
+}

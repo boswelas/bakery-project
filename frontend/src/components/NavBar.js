@@ -1,12 +1,14 @@
 import Link from "next/link";
-import styles from "../styles/page.module.css";
+import styles from "../styles/navbar.module.css";
 import { useState } from 'react';
 import { Button, Modal, Box, Typography } from '@mui/material';
-import { useAuth } from '@/components/AuthContext.js';
+import { useAuth, signUpWithEmail } from '@/components/AuthContext.js';
 
 const NavBar = () => {
-    const { user, login, logout } = useAuth();
+    const { user, login, logout, signUpWithEmail } = useAuth();
     const [open, setOpen] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     const handleOpen = () => {
         setOpen(true);
@@ -14,6 +16,24 @@ const NavBar = () => {
 
     const handleClose = () => {
         setOpen(false);
+    };
+
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value);
+    };
+
+    const handlePasswordChange = (e) => {
+        setPassword(e.target.value);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        signUpWithEmail(email, password);
+
+        // Reset the form fields
+        setEmail('');
+        setPassword('');
     };
 
 
@@ -44,12 +64,15 @@ const NavBar = () => {
                             aria-describedby="modal-modal-description"
                         >
                             <div className={styles.Modal}>
-                                <Typography id="modal-modal-title" variant="h6" component="h2">
-                                    Text in a modal
-                                </Typography>
-                                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                                    Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                                </Typography>
+                                <form onSubmit={handleSubmit}>
+                                    <label htmlFor="email">Email:</label>
+                                    <input type="email" id="email" value={email} onChange={handleEmailChange} />
+
+                                    <label htmlFor="password">Password:</label>
+                                    <input type="password" id="password" value={password} onChange={handlePasswordChange} />
+
+                                    <button type="submit">Sign Up</button>
+                                </form>
                             </div>
                         </Modal>
                     // <Link href="/">
