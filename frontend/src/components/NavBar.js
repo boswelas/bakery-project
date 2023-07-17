@@ -45,6 +45,7 @@ const NavBar = () => {
             handleClose();
             router.push('/signUp');
         } else {
+            console.log(email, password);
             signInWithEmail(email, password);
             handleClose();
         }
@@ -89,13 +90,13 @@ const NavBar = () => {
                                     <label htmlFor="password">Password:</label>
                                     <input type="password" id="password" value={password} onChange={handlePasswordChange} />
 
-                                    <button type="submit">Sign Up</button>
+                                    <button type="submit">Sign In</button>
                                 </form>
                             </div>
                         </Modal>
                     </div>)}
             </nav>
         </header>)
-}
+};
 
 export default NavBar;

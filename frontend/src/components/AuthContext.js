@@ -61,13 +61,16 @@ export const AuthContextProvider = ({ children }) => {
     };
     const signInWithEmail = (email, password) => {
         console.log("signInWithEmailAndPassword function called");
+        console.log(email, password);
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // Signed in 
                 const user = userCredential.user;
+                console.log('made user');
                 // ...
             })
             .catch((error) => {
+                console.log('caught error: ', error);
                 const errorCode = error.code;
                 const errorMessage = error.message;
             });
