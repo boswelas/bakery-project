@@ -2,10 +2,12 @@ import Link from "next/link";
 import styles from "../styles/navbar.module.css";
 import { useState } from 'react';
 import { Button, Modal, Box, Typography } from '@mui/material';
-import { useAuth, signUpWithEmail } from '@/components/AuthContext.js';
+import { useAuth, signInWithEmail } from '@/components/AuthContext.js';
+import { useRouter } from 'next/router';
 
 const NavBar = () => {
-    const { user, login, logout, signUpWithEmail } = useAuth();
+    const router = useRouter();
+    const { user, login, logout, signInWithEmail } = useAuth();
     const [open, setOpen] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -26,10 +28,26 @@ const NavBar = () => {
         setPassword(e.target.value);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        const response = await fetch('http://localhost:5001/checkUser', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: email }),
+        });
+        const data = await response.json();
+        console.log(data)
 
-        signUpWithEmail(email, password);
+        if (data.user == 'none') {
+            console.log("no user")
+            handleClose();
+            router.push('/signUp');
+        } else {
+            signInWithEmail(email, password);
+            handleClose();
+        }
 
         // Reset the form fields
         setEmail('');
@@ -56,7 +74,7 @@ const NavBar = () => {
                     </>
                 ) : (
                     <div>
-                        <Button onClick={handleOpen}>Open modal</Button>
+                        <Button onClick={handleOpen}>Log In</Button>
                         <Modal
                             open={open}
                             onClose={handleClose}
@@ -75,9 +93,6 @@ const NavBar = () => {
                                 </form>
                             </div>
                         </Modal>
-                    // <Link href="/">
-                    //     <span onClick={login}>Log In</span>
-                    // </Link>
                     </div>)}
             </nav>
         </header>)

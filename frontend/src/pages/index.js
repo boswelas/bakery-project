@@ -31,7 +31,6 @@ const Home = () => {
     };
 
     fetchInventoryData();
-    console.log(inventoryData);
   }, []);
 
 

@@ -61,6 +61,23 @@ def get_inventory():
 ############################# End route for Home #############################
 
 ############################# BEGIN route for Login #############################
+@app.route("/checkUser", methods=["POST"])
+def check_exists():
+    if request.method == "POST":
+        data = request.get_json()
+        email = data["email"]
+        query = ("SELECT * FROM customer WHERE email = (%s)")
+        cnx = create_connection()
+        cur = cnx.cursor()
+        cur.execute(query, (email,))
+        data = cur.fetchall()
+        if (len(data) == 0):
+            cur.close()
+            cnx.close()
+            return jsonify({"user": "none"})
+        cur.close()
+        cnx.close()
+        return jsonify({"user": data})
 
 
 @app.route("/login", methods=["POST"])
