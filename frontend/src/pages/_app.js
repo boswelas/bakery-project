@@ -1,12 +1,15 @@
 // pages/_app.js
-
+import { AuthContextProvider } from '../components/AuthContext';
 import '../styles/globals.css';
 import Layout from "@/components/Layout";
 
 function MyApp({ Component, pageProps }) {
-  // Custom logic or global setup can go here
-
-  return (<Layout> <Component {...pageProps} /></Layout>);
+  return (
+    <AuthContextProvider>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </AuthContextProvider>);
 }
 
 export default MyApp;

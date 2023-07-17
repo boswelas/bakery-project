@@ -60,6 +60,45 @@ def get_inventory():
 
 ############################# End route for Home #############################
 
+############################# BEGIN route for Login #############################
+
+
+@app.route("/login", methods=["POST"])
+def check_user_exists():
+    if request.method == "POST":
+        data = request.get_json()
+        uid = data["uid"]
+        email = data["email"]
+        displayName = data["displayName"]
+        query = ("SELECT * FROM customer WHERE id = (%s)")
+        # Opens connection & cursor
+        cnx = create_connection()
+        cur = cnx.cursor()
+
+        cur.execute(query, (uid,))
+        data = cur.fetchall()
+        if (len(data) == 0):
+            try:
+                cur.execute("""
+                    INSERT INTO customer (uid, email, display_name)
+                    VALUES ( %s, %s, %s)
+                """, (uid, email, displayName))
+
+                cnx.commit()
+                cur.close()
+                cnx.close()
+
+            except Exception as e:
+                cnx.rollback()
+                cur.close()
+                cnx.close()
+
+        cur.close()
+        cnx.close()
+        return jsonify({"user": data})
+
+############################# END route for Login #############################
+
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=os.getenv("PORT", default=5001))
