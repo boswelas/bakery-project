@@ -9,8 +9,8 @@ const Home = () => {
     const fetchInventoryData = async () => {
       try {
         const response = await fetch(
-          // 'http://localhost:5001/inventory', 
-          'https://bakery-project-production.up.railway.app/inventory',
+          'http://localhost:5001/inventory',
+          // 'https://bakery-project-production.up.railway.app/inventory',
           {
             method: 'POST',
             headers: {
@@ -46,6 +46,7 @@ const Home = () => {
                 <th>Name</th>
                 <th>Price</th>
                 <th>Description</th>
+                <th>Image</th>
               </tr>
             </thead>
             <tbody>
@@ -54,6 +55,7 @@ const Home = () => {
                   <td>{item.name}</td>
                   <td>{item.price}</td>
                   <td>{item.description}</td>
+                  <td>{item.image}</td>
                 </tr>
               ))}
             </tbody>

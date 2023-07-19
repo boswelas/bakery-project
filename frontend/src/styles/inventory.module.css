@@ -1,0 +1,139 @@
+.Card {
+  background-size: cover;
+  border-radius: 20px;
+  max-width: 90%;
+  margin-bottom: 20px;
+  text-align: center;
+  padding: 5px;
+  height: 23em;
+  width: 16em;
+  position: relative;
+}
+
+.Card h3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: x-large;
+  min-width: 100%;
+  text-align: center;
+  margin: 10px;
+  color: white;
+
+}
+
+.CardContent {
+  position: relative;
+}
+
+.CardGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: center;
+  gap: 10px;
+  margin: 0 auto;
+  width: 75%;
+}
+
+.CardTitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+}
+
+.Title {
+  margin-right: auto;
+  margin-bottom: 0;
+}
+
+.LargeIconButton {
+  width: 48px;
+  height: 48px;
+}
+
+.Container {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.EditIcon {
+  color: white;
+}
+
+.EditIconContainer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 5px;
+}
+
+.ViewInventoryButton {
+  display: inline-block;
+  padding: 5px 10px;
+  color: #fff;
+  background-color: #1976D2;
+  border: 1px solid #1976D2;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background-color 0.2s;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+
+}
+
+.ViewInventoryButton:hover {
+  color: #1976D2;
+  background-color: #F4F6F6;
+}
+
+.DeleteInventoryButton {
+  display: inline-block;
+  padding: 5px 10px;
+  color: #fff;
+  background-color: #d2191a;
+  border: 1px solid #d2191a;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background-color 0.2s;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+
+}
+
+.DeleteInventoryButton:hover {
+  color: #d2191a;
+  background-color: #F4F6F6;
+}
+
+.NameInput {
+  margin-top: .5em;
+  text-align: center;
+  padding: 0.5em 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1em;
+  outline: none;
+  transition: border-color 0.3s ease;
+  font-family: 'Abel', sans-serif;
+}
+
+.NameInput:focus {
+  border-color: #1976D2;
+  box-shadow: 0 0 5px #1976D2;
+}
+
+.ButtonGroup {
+  display: flex;
+  justify-content: center;
+}

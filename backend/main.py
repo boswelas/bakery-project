@@ -48,12 +48,38 @@ def get_inventory():
                 'id': row[0],
                 'name': row[1],
                 'price': row[2],
-                'description': row[3]
+                'description': row[3],
+                'image': row[4]
             }
             data.append(item)
         cursor.close()
         cnx.close()
         return jsonify({"inventory": data})
+    except Exception as e:
+        return jsonify({"error": str(e)})
+
+
+@app.route('/inventoryItem', methods=['POST'])
+def get_inventory_item():
+    data = request.get_json()
+    id = data['id']
+    try:
+        cnx = create_connection()
+        cursor = cnx.cursor()
+        cursor.execute("""SELECT * FROM inventory WHERE id = (%s)""", (id,))
+        data = []
+        for row in cursor.fetchall():
+            item = {
+                'id': row[0],
+                'name': row[1],
+                'price': row[2],
+                'description': row[3],
+                'image': row[4]
+            }
+            data.append(item)
+        cursor.close()
+        cnx.close()
+        return jsonify({"item": data})
     except Exception as e:
         return jsonify({"error": str(e)})
 
@@ -70,11 +96,11 @@ def add_user():
         last = data["last"]
         phone = data["phone"]
         cnx = create_connection()
-        cur = cnx.cursor()
-        cur.execute("""INSERT INTO customer (first_name, last_name, phone_number, email) VALUES (%s, %s, %s, %s)""",
-                    (first, last, phone, email))
+        cursor = cnx.cursor()
+        cursor.execute("""INSERT INTO customer (first_name, last_name, phone_number, email) VALUES (%s, %s, %s, %s)""",
+                       (first, last, phone, email))
         cnx.commit()
-        cur.close()
+        cursor.close()
         cnx.close()
         return jsonify({"success": "true"})
 
@@ -86,14 +112,14 @@ def check_exists():
         email = data["email"]
         query = ("SELECT * FROM customer WHERE email = (%s)")
         cnx = create_connection()
-        cur = cnx.cursor()
-        cur.execute(query, (email,))
-        data = cur.fetchall()
+        cursor = cnx.cursor()
+        cursor.execute(query, (email,))
+        data = cursor.fetchall()
         if (len(data) == 0):
-            cur.close()
+            cursor.close()
             cnx.close()
             return jsonify({"user": "none"})
-        cur.close()
+        cursor.close()
         cnx.close()
         return jsonify({"user": data})
 
@@ -105,10 +131,10 @@ def get_user():
         email = data["email"]
         query = ("SELECT * FROM customer WHERE email = (%s)")
         cnx = create_connection()
-        cur = cnx.cursor()
-        cur.execute(query, (email,))
+        cursor = cnx.cursor()
+        cursor.execute(query, (email,))
         data = []
-        for row in cur.fetchall():
+        for row in cursor.fetchall():
             item = {
                 'id': row[0],
                 'first_name': row[1],
@@ -117,7 +143,7 @@ def get_user():
                 'email': row[4]
             }
             data.append(item)
-        cur.close()
+        cursor.close()
         cnx.close()
         return jsonify({"user": data})
 
