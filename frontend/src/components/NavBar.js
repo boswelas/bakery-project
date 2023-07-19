@@ -39,14 +39,11 @@ const NavBar = () => {
             body: JSON.stringify({ email: email }),
         });
         const data = await response.json();
-        console.log(data)
 
         if (data.user == 'none') {
-            console.log("no user")
             handleClose();
             router.push('/signUp');
         } else {
-            console.log(email, password);
             signInWithEmail(email, password);
             handleClose();
             setdisplayName(data.user[0][1]);

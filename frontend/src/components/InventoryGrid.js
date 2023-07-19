@@ -7,9 +7,7 @@ import InventoryCard from "./InventoryCard";
 
 
 function InventoryGrid({ data }) {
-    console.log(data);
     const inventoryItems = data.map((cardData, index) => (
-        console.log(cardData),
         <div key={index} >
             <InventoryCard props={cardData} />
         </div>

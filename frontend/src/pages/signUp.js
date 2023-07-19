@@ -48,7 +48,6 @@ const SignUp = () => {
             }),
         });
         const data = await response.json();
-        console.log(data)
         signUpWithEmail(email, password);
         router.push('/');
     };
