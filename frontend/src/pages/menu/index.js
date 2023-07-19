@@ -8,8 +8,8 @@ const Menu = () => {
         const fetchInventoryData = async () => {
             try {
                 const response = await fetch(
-                    'http://localhost:5001/inventory',
-                    // 'https://bakery-project-production.up.railway.app/inventory',
+                    // 'http://localhost:5001/inventory',
+                    'https://bakery-project-production.up.railway.app/inventory',
                     {
                         method: 'POST',
                         headers: {

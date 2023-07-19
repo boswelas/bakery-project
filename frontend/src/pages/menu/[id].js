@@ -14,8 +14,8 @@ const InventoryDetail = () => {
         const fetchInventoryData = async () => {
             try {
                 const response = await fetch(
-                    'http://localhost:5001/inventoryItem',
-                    // 'https://bakery-project-production.up.railway.app/inventory',
+                    // 'http://localhost:5001/inventoryItem',
+                    'https://bakery-project-production.up.railway.app/inventoryItem',
                     {
                         method: 'POST',
                         headers: {
