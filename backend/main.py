@@ -33,7 +33,7 @@ def index():
     return jsonify("Welcome to the backend!")
 
 
-############################# BEGIN route for Home #############################
+############################# BEGIN route for Inventory #############################
 
 @app.route('/inventory', methods=['POST'])
 def get_inventory():
@@ -82,9 +82,28 @@ def get_inventory_item():
         return jsonify({"item": data})
     except Exception as e:
         return jsonify({"error": str(e)})
+    
+@app.route('/addItem', methods=['POST'])
+def add_item():
+    if request.method == "POST":
+        data = request.get_json()
+        name = data["name"]
+        price = data["price"]
+        description = data["description"]
+        image = data["image"]
+        cnx = create_connection()
+        cursor = cnx.cursor()
+        cursor.execute("""INSERT INTO inventory (name, price, description, image) VALUES (%s, %s, %s, %s)""",
+                       (name, price, description, image))
+        cnx.commit()
+        cursor.close()
+        cnx.close()
+        return jsonify({"success": "true"})
 
 
-############################# End route for Home #############################
+
+
+############################# End route for Inventory #############################
 
 ############################# BEGIN route for Login #############################
 @app.route("/addUser", methods=["POST"])

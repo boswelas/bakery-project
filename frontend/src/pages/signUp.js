@@ -35,7 +35,11 @@ const SignUp = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch('http://localhost:5001/addUser', {
+        const response = await fetch(
+            // 'http://localhost:5001/addUser', 
+            'https://bakery-project-production.up.railway.app/addUser',
+
+            {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
