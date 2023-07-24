@@ -32,8 +32,8 @@ const NavBar = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const response = await fetch(
-            // 'http://localhost:5001/checkUser', 
-            'https://bakery-project-production.up.railway.app/checkUser',
+            'http://localhost:5001/checkUser',
+            // 'https://bakery-project-production.up.railway.app/checkUser',
             {
                 method: 'POST',
                 headers: {
@@ -42,7 +42,6 @@ const NavBar = () => {
                 body: JSON.stringify({ email: email }),
             });
         const data = await response.json();
-
         if (data.user == 'none') {
             handleClose();
             router.push('/signUp');
@@ -50,6 +49,7 @@ const NavBar = () => {
             signInWithEmail(email, password);
             handleClose();
             setdisplayName(data.user[0][1]);
+            console.log(data.role)
         }
 
         // Reset the form fields
