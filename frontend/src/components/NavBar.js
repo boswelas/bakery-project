@@ -31,13 +31,16 @@ const NavBar = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch('http://localhost:5001/checkUser', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: email }),
-        });
+        const response = await fetch(
+            // 'http://localhost:5001/checkUser', 
+            'https://bakery-project-production.up.railway.app/checkUser',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: email }),
+            });
         const data = await response.json();
 
         if (data.user == 'none') {
