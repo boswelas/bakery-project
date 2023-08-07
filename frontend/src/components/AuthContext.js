@@ -16,6 +16,7 @@ const getToken = async () => {
     const user = auth.currentUser;
     if (user) {
         const token = await user.getIdToken();
+        console.log(token);
         return token;
     } else {
         return null;

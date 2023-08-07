@@ -1,8 +1,9 @@
 import os
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request, json
 from flask_cors import CORS
 import mysql.connector
-
+import firebase_admin
+from firebase_admin import credentials, auth
 
 app = Flask(__name__)
 CORS(app, origins=[
@@ -15,6 +16,16 @@ PASSWORD = os.environ['MYSQLPASSWORD']
 DATABASE = os.environ['MYSQLDATABASE']
 
 app.secret_key = os.environ['secret_key']
+
+firebase_credentials_json = os.environ.get('FIREBASE_CREDENTIALS_JSON')
+
+if firebase_credentials_json:
+    # Parse the JSON data
+    firebase_credentials_data = json.loads(firebase_credentials_json)
+
+    # Initialize Firebase Admin SDK
+    cred = credentials.Certificate(firebase_credentials_data)
+    firebase_admin.initialize_app(cred)
 
 
 def create_connection():
@@ -29,6 +40,15 @@ def create_connection():
     return db
 
 
+def verify_token():
+    try:
+        decoded_token = auth.verify_id_token(id_token)
+        uid = decoded_token['uid']
+        return jsonify({"success": "True"})
+    except Exception as e:
+        return jsonify({"success": "False"})
+
+
 @app.route('/')
 def index():
     print("Server is running!")
@@ -36,6 +56,22 @@ def index():
 
 
 ############################# BEGIN route for User #############################
+
+def check_role(header):
+    decoded_token = auth.verify_id_token(header)
+    if decoded_token:
+        email = decoded_token['email']
+        print("email is: ", email)
+        cnx = create_connection()
+        cursor = cnx.cursor()
+        cursor.execute("""SELECT ur.role_id FROM customer AS c JOIN user_role AS ur ON c.id = ur.user_id 
+                            WHERE c.email = (%s)""", (email,))
+        data = cursor.fetchone()
+        print("data is: ", data)
+        return True
+    return False
+
+
 @app.route("/addUser", methods=["POST"])
 def add_user():
     if request.method == "POST":
@@ -80,10 +116,6 @@ def check_exists():
             # Default role if the user has no specific role_id
             user_role = 3
 
-        session['user_id'] = user_id
-        session['email'] = email
-        session['role'] = user_role
-
         cursor.close()
         cnx.close()
         return jsonify({"user": data, "role": user_role})
@@ -111,12 +143,6 @@ def get_user():
         cursor.close()
         cnx.close()
         return jsonify({"user": data})
-
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    return jsonify({"session": "cleared"})
 
 
 ############################# END route for User #############################
@@ -177,10 +203,12 @@ def get_inventory_item():
 def add_item():
     if request.method == "POST":
         data = request.get_json()
+        header = request.headers.get('Authorization')
         name = data["name"]
         price = data["price"]
         description = data["description"]
         image = data["image"]
+        check_role(header)
         cnx = create_connection()
         cursor = cnx.cursor()
         cursor.execute("""INSERT INTO inventory (name, price, description, image) VALUES (%s, %s, %s, %s)""",
@@ -189,6 +217,8 @@ def add_item():
         cursor.close()
         cnx.close()
         return jsonify({"success": "true"})
+    else:
+        return jsonify({"success": "false"})
 
 
 ############################# End route for Inventory #############################

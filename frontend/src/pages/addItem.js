@@ -1,15 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { useAuth } from '@/components/AuthContext.js';
 
 const AddItem = () => {
     const storage = getStorage();
     const router = useRouter();
+    const { getToken } = useAuth();
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [description, setDescription] = useState('');
     const [image, setImage] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
+
 
     const handleNameChange = (e) => {
         setName(e.target.value);
@@ -69,23 +72,25 @@ const AddItem = () => {
 
         try {
             const downloadURL = await uploadImageAndGetDownloadURL(image);
-
+            const token = await getToken();
+            console.log("got token");
             // Make the fetch call to add the item to the database
             const response = await fetch(
-                // 'http://localhost:5001/addItem', 
-                'https://bakery-project-production.up.railway.app/addItem',
+                'http://localhost:5001/addItem',
+                // 'https://bakery-project-production.up.railway.app/addItem',
                 {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: name,
-                    price: price,
-                    description: description,
-                    image: downloadURL, // Use the downloadURL directly here
-                }),
-            });
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `${token}`,
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        price: price,
+                        description: description,
+                        image: downloadURL, // Use the downloadURL directly here
+                    }),
+                });
 
             const data = await response.json();
             router.push('/menu');

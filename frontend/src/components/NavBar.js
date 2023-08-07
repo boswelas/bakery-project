@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 
 const NavBar = () => {
     const router = useRouter();
-    const { user, login, logout, signInWithEmail } = useAuth();
+    const { user, login, logout, signInWithEmail, getToken } = useAuth();
     const [open, setOpen] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -31,13 +31,15 @@ const NavBar = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const token = await getToken();
         const response = await fetch(
-            // 'http://localhost:5001/checkUser',
-            'https://bakery-project-production.up.railway.app/checkUser',
+            'http://localhost:5001/checkUser',
+            // 'https://bakery-project-production.up.railway.app/checkUser',
             {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({ email: email }),
             });
