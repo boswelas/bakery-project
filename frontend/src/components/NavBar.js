@@ -66,6 +66,7 @@ const NavBar = () => {
                 <Link href="/"><div className={styles["navbar-link"]}>Bakery</div></Link>
                 <Link href="/menu" className={styles["navbar-link"]}>Menu</Link>
                 <Link href="/about" className={styles["navbar-link"]}>About</Link>
+                <Link href="/shop" className={styles["navbar-link"]}>Shop</Link>
                 {user ? (
                     <>
                         <div>
